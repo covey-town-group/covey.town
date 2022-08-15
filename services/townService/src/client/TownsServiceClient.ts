@@ -96,6 +96,7 @@ export interface TownJoinResponse {
 export interface TownCreateRequest {
   friendlyName: string;
   isPubliclyListed: boolean;
+  accessToken?: string;
 }
 
 /**
