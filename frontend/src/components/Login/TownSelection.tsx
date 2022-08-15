@@ -392,13 +392,20 @@ export default function TownSelection({ doLogin }: TownSelectionProps): JSX.Elem
               <FormLabel mt={2} mb={0} htmlFor='name'>
                 Password
               </FormLabel>
-              <Input
-                autoFocus
-                name='name'
-                placeholder='Your login password'
-                value={loginPassword}
-                onChange={event => setLoginPassword(event.target.value)}
-              />
+              <InputGroup size='md'>
+                <Input
+                  autoFocus
+                  name='name'
+                  placeholder='Your login password'
+                  type={PasswordVisibility ? loginPassword : 'password'}
+                  onChange={event => setLoginPassword(event.target.value)}
+                />
+                <InputRightElement width='4.5rem'>
+                  <Button h='1.75rem' size='sm' onClick={changeConfirmPassword}>
+                    {PasswordVisibility ? 'Hide' : 'Show'}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
               <Flex>
                 <Button mt={2} colorScheme='blue' data-testid='SinginButton' onClick={handleSignIn}>
                   Sign in!
