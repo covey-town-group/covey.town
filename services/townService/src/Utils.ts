@@ -44,6 +44,9 @@ export async function signAccessToken(email: string): Promise<string> {
 export async function verifyAccessToken(
   token: string,
 ): Promise<string | jwt.JwtPayload | undefined> {
+  if (token === '') {
+    return undefined;
+  }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     return decoded;
