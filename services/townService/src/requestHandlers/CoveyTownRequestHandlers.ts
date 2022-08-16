@@ -389,6 +389,16 @@ export async function authLoginHandler(
       },
     };
   }
+  if (user.banned) {
+    return {
+      isOK: false,
+      response: {
+        username: '',
+        message: 'The banhammer fell upon you!',
+        accessToken: '',
+      },
+    };
+  }
   const token = await signAccessToken(requestData.email);
   if (!token) {
     return {
