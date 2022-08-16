@@ -283,7 +283,6 @@ export default function TownSelection({ doLogin }: TownSelectionProps): JSX.Elem
       NewLoginDisplay(!oldLoginDisplay);
       NewTownDisplay(!oldTownDisplay);
     } catch (err) {
-      console.log(err);
       toast({
         title: 'error',
         description: err.toString(),

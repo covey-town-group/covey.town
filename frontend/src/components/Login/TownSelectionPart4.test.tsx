@@ -4,6 +4,7 @@ import { render, RenderResult, waitFor } from '@testing-library/react';
 import userEvent, { TargetElement } from '@testing-library/user-event';
 import { nanoid } from 'nanoid';
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import TownsServiceClient from '../../classes/TownsServiceClient';
 import Video from '../../classes/Video/Video';
 import CoveyAppContext from '../../contexts/CoveyAppContext';
@@ -127,7 +128,9 @@ describe('Sign up functionality', () => {
 
     // Assemble all the testing envirnment
     mocklistTowns.mockImplementation(() => listTowns(nanoid()));
-    renderData = render(wrappedTownSelection());
+    await act( async () => {
+      renderData = render(wrappedTownSelection());
+    });
     newUserNameField = renderData.getByPlaceholderText('Your user name') as HTMLInputElement;
     newEmailField = renderData.getByPlaceholderText('Your email') as HTMLInputElement;
     newPasswordField = renderData.getByPlaceholderText('Your password') as HTMLInputElement;

@@ -4,6 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { render, RenderResult, waitFor} from '@testing-library/react'
 import { nanoid } from 'nanoid';
 import userEvent, { TargetElement } from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import TownsServiceClient from '../../classes/TownsServiceClient';
 import TownSelection from './TownSelection';
 import Video from '../../classes/Video/Video';
@@ -119,7 +120,9 @@ describe('Sign up functionality', () => {
 
     // Assemble all the testing envirnment
     mocklistTowns.mockImplementation(() => listTowns(nanoid()));
-    renderData = render(wrappedTownSelection());
+    await act( async () => {
+      renderData = render(wrappedTownSelection());
+    })
     returningLoginField = renderData.getByPlaceholderText('Your Email') as HTMLInputElement;
     returningPasswordField = renderData.getByPlaceholderText('Your login password') as HTMLInputElement;
     signInButton = renderData.getByRole('button', {name:'Sign in!'});
