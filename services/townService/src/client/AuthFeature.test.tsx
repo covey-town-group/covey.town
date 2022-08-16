@@ -4,6 +4,7 @@ import http from 'http';
 import { AddressInfo } from 'net';
 import { nanoid } from 'nanoid';
 import { StatusCodes } from 'http-status-codes';
+import bcrypt from 'bcryptjs';
 import addTownRoutes from '../router/towns';
 import TownsServiceClient from './TownsServiceClient';
 import * as prismaFunctions from './prismaFunctions';
@@ -232,6 +233,52 @@ describe('TownsServiceAPIREST', () => {
         }
       }
       mockLoginHandler.mockReset();
+    });
+    it('should not allowed banned user to log in', async () => {
+      const mockCompareSync = jest.spyOn(bcrypt, 'compareSync').mockReturnValue(true);
+      const mockLoginHandler = jest.spyOn(prismaFunctions, 'findUser')
+        .mockResolvedValue({
+          user_name: nanoid(),
+          hash_password: nanoid(),
+          banned: true,
+        });
+      try {
+        await apiClient.signIn({
+          email,
+          password,
+        });
+        fail('Should throw an error');
+      } catch (err) {
+        if (err instanceof Error) {
+          expect(err.message).toBe('Error processing request: undefined');
+        } else {
+          fail('shoult not go here');
+        }
+      }
+      mockCompareSync.mockRestore();
+      mockLoginHandler.mockRestore();
+    });
+    it('should allow user to login if he is not banned', async () => {
+      const mockSignAccessToken = jest.spyOn(utils, 'signAccessToken').mockResolvedValue(nanoid());
+      const mockCompareSync = jest.spyOn(bcrypt, 'compareSync').mockReturnValue(true);
+      const mockFinderUser = jest.spyOn(prismaFunctions, 'findUser')
+        .mockResolvedValue({
+          user_name: nanoid(),
+          hash_password: nanoid(),
+          banned: false,
+        });
+      try {
+        await apiClient.signIn({
+          email,
+          password,
+        });
+      } catch (err) {
+        fail('should not throw error');
+        // not
+      }
+      mockSignAccessToken.mockRestore();
+      mockCompareSync.mockRestore();
+      mockFinderUser.mockRestore();
     });
   });
   describe('test verifyAccessToken function', () => {
