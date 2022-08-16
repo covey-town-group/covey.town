@@ -357,9 +357,7 @@ export async function authSignupHandler(
     email: requestData.email,
     user_name: requestData.userName,
     hash_password: hashedPassword,
-    previous_town: 0,
     banned: false,
-    is_admin: false,
   });
   return {
     isOK: true,
