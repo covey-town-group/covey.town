@@ -255,64 +255,6 @@ describe('TownsServiceAPIREST', () => {
       expect(decodedObject).not.toBeDefined();
     });
   });
-  describe('test access token for create town', () => {
-    it('createe town can successfully receive request data', async () => {
-      const friendlyName = nanoid();
-      const accessToken = nanoid();
-      const mockVerifyAccessToken = jest.spyOn(utils, 'verifyAccessToken').mockResolvedValue(nanoid());
-      const spyTownCreateHandler = jest.spyOn(requestHandlers, 'townCreateHandler');
-      try {
-        await apiClient.createTown({
-          friendlyName,
-          isPubliclyListed: true,
-          accessToken,
-        });
-        expect(spyTownCreateHandler).toBeCalledWith({
-          friendlyName,
-          isPubliclyListed: true,
-          accessToken,
-        });
-      } catch (err) {
-        fail('should not throw an error');
-      }
-      mockVerifyAccessToken.mockReset();
-    });
-    it('should throw an error when token is not valid', async () => {
-      const friendlyName = nanoid();
-      const spyTownCreateHandler = jest.spyOn(requestHandlers, 'townCreateHandler');
-      try {
-        await apiClient.createTown({
-          friendlyName,
-          isPubliclyListed: true,
-        });
-        expect(spyTownCreateHandler).toBeCalledWith({
-          friendlyName,
-          isPubliclyListed: true,
-        });
-        fail('should not throw an error');
-      } catch (err) {
-        // throw an err
-      }
-    });
-    it('should fail when passing an empty token', async () => {
-      const friendlyName = nanoid();
-      const spyTownCreateHandler = jest.spyOn(requestHandlers, 'townCreateHandler');
-      try {
-        await apiClient.createTown({
-          friendlyName,
-          isPubliclyListed: true,
-          accessToken: '',
-        });
-        expect(spyTownCreateHandler).toBeCalledWith({
-          friendlyName,
-          isPubliclyListed: true,
-        });
-        fail('should not throw an error');
-      } catch (err) {
-        // throw an err
-      }
-    });
-  });
   describe('Test access token for joing the town', () => {
     type TestTownData = {
       friendlyName: string;
@@ -395,6 +337,73 @@ describe('TownsServiceAPIREST', () => {
       } catch (err) {
         // should catch error
       }
+    });
+  });
+  describe('test access token for create town', () => {
+    type TestTownData = {
+      friendlyName: string;
+      coveyTownID: string;
+      isPubliclyListed: boolean;
+      townUpdatePassword: string;
+    };
+    async function createTownForTesting(
+      friendlyNameToUse?: string,
+      isPublic = false,
+      accessToken?: string,
+    ): Promise<TestTownData> {
+      const friendlyName =
+        friendlyNameToUse !== undefined
+          ? friendlyNameToUse
+          : `${isPublic ? 'Public' : 'Private'}TestingTown=${nanoid()}`;
+      const ret = await apiClient.createTown({
+        friendlyName,
+        isPubliclyListed: isPublic,
+        accessToken,
+      });
+      return {
+        friendlyName,
+        isPubliclyListed: isPublic,
+        coveyTownID: ret.coveyTownID,
+        townUpdatePassword: ret.coveyTownPassword,
+      };
+    }
+    it('createe town can successfully receive request data', async () => {
+      const spyTownCreateHandler = jest.spyOn(requestHandlers, 'townCreateHandler');
+      jest.spyOn(utils, 'verifyAccessToken'). mockResolvedValue('validUser');
+      await createTownForTesting('frank', true);
+      expect(spyTownCreateHandler).toBeCalledWith({
+        friendlyName: 'frank',
+        isPubliclyListed: true,
+      });
+      jest.clearAllMocks();
+    });
+    it('createe town can successfully receive request data', async () => {
+      const spyTownCreateHandler = jest.spyOn(requestHandlers, 'townCreateHandler');
+      try {
+        await createTownForTesting('frank', true, nanoid());
+        expect(spyTownCreateHandler).toBeCalledWith({
+          friendlyName: 'frank',
+          isPubliclyListed: true,
+        });
+        fail('should throw error');
+      } catch (err) {
+        // pass
+      }
+      jest.clearAllMocks();
+    });
+    it('createe town can successfully receive request data', async () => {
+      const spyTownCreateHandler = jest.spyOn(requestHandlers, 'townCreateHandler');
+      try {
+        await createTownForTesting('frank', true, '');
+        expect(spyTownCreateHandler).toBeCalledWith({
+          friendlyName: 'frank',
+          isPubliclyListed: true,
+        });
+        fail('should throw error');
+      } catch (err) {
+        // pass
+      }
+      jest.clearAllMocks();
     });
   });
 });

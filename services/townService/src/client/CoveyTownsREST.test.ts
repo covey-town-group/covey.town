@@ -64,6 +64,7 @@ describe('TownsServiceAPIREST', () => {
     jest.spyOn(utils, 'verifyAccessToken').mockResolvedValue('validUser');
   });
   afterAll(async () => {
+    jest.spyOn(utils, 'verifyAccessToken').mockReset();
     await server.close();
   });
   describe('CoveyTownCreateAPI', () => {
