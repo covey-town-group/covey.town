@@ -9,6 +9,7 @@ import TownSelection from './TownSelection';
 import Video from '../../classes/Video/Video';
 import CoveyAppContext from '../../contexts/CoveyAppContext';
 import { ChatProvider } from '../VideoCall/VideoFrontend/components/ChatProvider';
+import { act } from 'react-dom/test-utils';
 
 const mockConnect = jest.fn(() => Promise.resolve());
 
@@ -119,7 +120,9 @@ describe('Sign up functionality', () => {
 
     // Assemble all the testing envirnment
     mocklistTowns.mockImplementation(() => listTowns(nanoid()));
-    renderData = render(wrappedTownSelection());
+    await act( async () => {
+      renderData = render(wrappedTownSelection());
+    })
     returningLoginField = renderData.getByPlaceholderText('Your Email') as HTMLInputElement;
     returningPasswordField = renderData.getByPlaceholderText('Your login password') as HTMLInputElement;
     signInButton = renderData.getByRole('button', {name:'Sign in!'});
