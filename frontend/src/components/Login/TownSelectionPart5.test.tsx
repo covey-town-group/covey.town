@@ -4,12 +4,12 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { render, RenderResult, waitFor} from '@testing-library/react'
 import { nanoid } from 'nanoid';
 import userEvent, { TargetElement } from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import TownsServiceClient from '../../classes/TownsServiceClient';
 import TownSelection from './TownSelection';
 import Video from '../../classes/Video/Video';
 import CoveyAppContext from '../../contexts/CoveyAppContext';
 import { ChatProvider } from '../VideoCall/VideoFrontend/components/ChatProvider';
-import { act } from 'react-dom/test-utils';
 
 const mockConnect = jest.fn(() => Promise.resolve());
 
