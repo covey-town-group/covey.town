@@ -280,7 +280,6 @@ export default function TownSelection({ doLogin }: TownSelectionProps): JSX.Elem
       });
       setJwtToken(returnUser.accessToken);
       setUserName(returnUser.username);
-      setUserName(loginEmail);
       NewLoginDisplay(!oldLoginDisplay);
       NewTownDisplay(!oldTownDisplay);
     } catch (err) {
