@@ -1,4 +1,4 @@
-import { createUser, updateUser, deleteUser } from './prismaFunctions';
+import { createUser, deleteUser, updateUser } from './prismaFunctions';
 import prismaMock from './singleton';
 
 it('should create new user ', async () => {
@@ -8,8 +8,6 @@ it('should create new user ', async () => {
     email: 'vitor@vitor.io',
     hash_password: 'afdjfkhanf[owh',
     banned: false,
-    is_admin: false,
-    previous_town: 0,
   };
 
   prismaMock.user.create.mockResolvedValue(user);
@@ -20,8 +18,6 @@ it('should create new user ', async () => {
     email: 'vitor@vitor.io',
     hash_password: 'afdjfkhanf[owh',
     banned: false,
-    is_admin: false,
-    previous_town: 0,
   });
 });
 
@@ -32,8 +28,6 @@ it('should update a users name ', async () => {
     email: 'victor@victor.io',
     hash_password: 'afdjfkhanf[owh',
     banned: false,
-    is_admin: false,
-    previous_town: 0,
   };
 
   prismaMock.user.update.mockResolvedValue(user);
@@ -44,8 +38,6 @@ it('should update a users name ', async () => {
     email: 'victor@victor.io',
     hash_password: 'afdjfkhanf[owh',
     banned: false,
-    is_admin: false,
-    previous_town: 0,
   });
 });
 
@@ -56,8 +48,6 @@ it('should fail if user exists', async () => {
     email: 'victor.@victor.io',
     hash_password: 'afdjfkhanf[owh',
     banned: false,
-    is_admin: false,
-    previous_town: 0,
   };
 
   prismaMock.user.create.mockRejectedValue(new Error('User already exists!'));
@@ -72,8 +62,6 @@ it('should delete a user', async () => {
     email: 'victor@victor.io',
     hash_password: 'afdjfkhanf[owh',
     banned: false,
-    is_admin: false,
-    previous_town: 0,
   };
 
   prismaMock.user.delete.mockResolvedValue(user);
@@ -83,7 +71,5 @@ it('should delete a user', async () => {
     email: 'victor@victor.io',
     hash_password: 'afdjfkhanf[owh',
     banned: false,
-    is_admin: false,
-    previous_town: 0,
   });
 });

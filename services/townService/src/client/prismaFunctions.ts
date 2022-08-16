@@ -4,9 +4,7 @@ export interface CreateUser {
   email: string;
   user_name: string;
   hash_password: string;
-  previous_town: number;
   banned: boolean;
-  is_admin: boolean;
 }
 
 export async function createUser(user: CreateUser): Promise<CreateUser> {
