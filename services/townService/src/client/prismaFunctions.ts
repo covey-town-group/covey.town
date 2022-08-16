@@ -53,6 +53,7 @@ interface FindUser {
 interface FindUserResult {
   user_name: string;
   hash_password: string;
+  banned: boolean;
 }
 
 export async function findUser(user: FindUser): Promise<FindUserResult> {
@@ -61,10 +62,11 @@ export async function findUser(user: FindUser): Promise<FindUserResult> {
     select: {
       user_name: true,
       hash_password: true,
+      banned: true,
     },
   });
   if (result) {
     return result;
-  } 
+  }
   throw new Error('User not found!');
 }
