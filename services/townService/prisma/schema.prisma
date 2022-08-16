@@ -15,7 +15,5 @@ model User {
   user_name String @unique
   email String  @unique
   hash_password String
-  previous_town Int
   banned Boolean
-  is_admin Boolean
 }
