@@ -418,7 +418,7 @@ export default function TownSelection({ doLogin }: TownSelectionProps): JSX.Elem
                     NewLoginDisplay(!oldLoginDisplay);
                     NewSignUpDisplay(!oldSignUpDisplay);
                   }}>
-                  Already have an account? LOGIN
+                  Dont have an account? SIGNUP
                 </Button>
               </Flex>
             </FormControl>
