@@ -7,6 +7,11 @@ export interface CreateUser {
   banned: boolean;
 }
 
+/**
+ * Create user in the SQL database
+ * @param user we need to create
+ * @returns a promise that operation resutl
+ */
 export async function createUser(user: CreateUser): Promise<CreateUser> {
   try {
     const result = await prisma.user.create({
@@ -24,6 +29,11 @@ interface UpdateUser {
   email: string;
 }
 
+/**
+ * Update the User that already in the database
+ * @param user the update information
+ * @returns the resul successfully or not
+ */
 export async function updateUser(user: UpdateUser): Promise<UpdateUser> {
   const result = await prisma.user.update({
     where: { id: user.id },
@@ -36,6 +46,11 @@ interface DeleteUser {
   email: string;
 }
 
+/**
+ * Delete user from the database.
+ * @param user we need to delete
+ * @returns  the result whether is success or not
+ */
 export async function deleteUser(user: DeleteUser): Promise<DeleteUser> {
   const result = await prisma.user.delete({
     where: { email: user.email },
@@ -54,6 +69,11 @@ interface FindUserResult {
   banned: boolean;
 }
 
+/**
+ * To find the user in our databse 
+ * @param user we want to find in our database
+ * @returns sccessfully or not
+ */
 export async function findUser(user: FindUser): Promise<FindUserResult> {
   const result = await prisma.user.findUnique({
     where: { email: user.email },
