@@ -32,10 +32,55 @@ To create an account and configure your local environment:
 | `TWILIO_API_KEY_SECRET` | The secret for the API key you created.   |
 | `TWILIO_API_AUTH_TOKEN` | Visible on your twilio account dashboard. |
 
+### Deploy PostgreSQL in Heroku:
+1. We first signed up and created a new Heroku account. We completed this by following instructions on the Heroku sign-up page.
+2. On the top right corner click New. Then click the ‘Create new app’ button. Pick your favorite name. Then click Create app. 
+3. From here, navigate to the top menu bar and click ‘Resources’. Inside the ‘Add-ons’ field type postgres, and click ‘Heroku Postgres’. In the ‘plan name’ section choose the free version, and then click ‘submit order form’.
+4. From here we will see our database successfully deployed. We click the ‘Heroku Postgres’ button which will redirect us to the database panel.
+5. We then click ‘Settings’ in the menu bar, and then click the ‘Database Credentials’ row and click the ‘View Credentials’ button.
+6. We then copy the URL information that will be something along the lines of… ‘pstgres://jdsklajflsadfkl…..’
+Go back to our .env file where we will add another line to this file:
+
+| Config Value            | Description                               |
+| ----------------------- | ----------------------------------------- |
+| `DATABASE_URL`          | URL information we copy early.            |
+
+We need to create an environment variable for the JWT secret. We open the Linux command line or Mac OS command line and type the below command:<br />
+`openssl rand -base64 64`<br />
+The terminal will generate a secret, then copy and paste this secret into our `.env` file again(Just copy the first line).
+
+| Config Value            | Description                               |
+| ----------------------- | ----------------------------------------- |
+| `JWT_SECRET`            | The secret we generated previously.       |
+
+Below is the complete `.env` file:
+
+| Config Value            | Description                               |
+| ----------------------- | ----------------------------------------- |
+| `TWILIO_ACCOUNT_SID`    | Visible on your twilio account dashboard. |
+| `TWILIO_API_KEY_SID`    | The SID of the new API key you created.   |
+| `TWILIO_API_KEY_SECRET` | The secret for the API key you created.   |
+| `TWILIO_API_AUTH_TOKEN` | Visible on your twilio account dashboard. |
+| `DATABASE_URL`          | URL information we copy early.            |
+| `JWT_SECRET`            | The secret we generated previously.       |
+
+
 ### Starting the backend
 
-Once your backend is configured, you can start it by running `npm start` in the `services/townService` directory (the first time you run it, you will also need to run `npm install`).
-The backend will automatically restart if you change any of the files in the `services/townService/src` directory.
+Once your backend is configured, we need to go to the `services/townService` directory and enter the following commands:
+
+`npm install`<br />
+This command is to install dependencies.
+
+`npx prisma db push`<br />
+This command is to push the schema to the database.
+
+`npx prisma generate`<br />
+Sync command used to sync with client and database.
+
+`npm start`<br />
+This command is to start our backend server.
+
 
 ### Configuring the frontend
 

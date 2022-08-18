@@ -141,6 +141,7 @@ export interface ResponseEnvelope<T> {
 export async function townJoinHandler(
   requestData: TownJoinRequest,
 ): Promise<ResponseEnvelope<TownJoinResponse>> {
+  // we added another layer of security that only login user can join the town
   const token = await verifyAccessToken(requestData.accessToken);
   if (!token) {
     return {
@@ -185,6 +186,7 @@ export function townListHandler(): ResponseEnvelope<TownListResponse> {
 export function townCreateHandler(
   requestData: TownCreateRequest,
 ): ResponseEnvelope<TownCreateResponse> {
+  // we added another layer of security that only login user can create the town
   const result = verifyAccessToken(requestData.accessToken);
   assert(result);
   const townsStore = CoveyTownsStore.getInstance();
